@@ -36,8 +36,9 @@ jobs:
       - name: Install the pinned Lean toolchain
         run: |
           test "$(tr -d '\r\n' < lean-toolchain)" = 'leanprover/lean4:v4.37.0-rc1'
-          curl -fsSL --retry 3 https://github.com/leanprover/lean4/releases/download/v4.37.0-rc1/lean-4.37.0-rc1-linux.tar.zst | tar --zstd -x -C "$RUNNER_TEMP"
-          echo "$RUNNER_TEMP/lean-4.37.0-rc1-linux/bin" >> "$GITHUB_PATH"
+          curl -fsSL --retry 3 https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+          "$HOME/.elan/bin/elan" toolchain install leanprover/lean4:v4.37.0-rc1
 
       - name: Restore the validated baseline cache
         run: |
